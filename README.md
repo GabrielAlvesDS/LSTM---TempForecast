@@ -1,103 +1,109 @@
-# TempTrack - Temperature Forecasting Model
+# TempForest - Temperature Forecasting Long Short Term Model
 
 ![cover](https://github.com/GabrielAlvesDS/CarPrice_Pro/blob/main/images/carprice%20pro_cut.jpg)
 
 <br>
 
 ## Objective
-This project aims to deepen knowledge in time series analysis and explore new algorithms. Two models were developed to predict hourly temperature over a year using Prophet and XGBoost. The goal is to assess the usability of each model and identify which one performs better.
-
-The choice of a one-year period with hourly predictions was made to allow the models to capture seasonal variations throughout the year.
-
+Predict the air temperature for the next hour based on the last 24 hours of historical data using an LSTM model.
 
 ## Data Set
 The data used in this project were extracted from the complete historical records of INMET for the region of Seropédica, in the state of Rio de Janeiro, Brazil, where EMBRAPA is located. This data set includes various climate measurements recorded hourly since 2002. For this project, we exclusively used the variable 'TEMPERATURA DO AR - BULBO SECO, HORÁRIA (°C)', which provided a robust base for training the models. Below is a sample of the data used:
 
 ## Data Preprocessing
-Common Preprocessing for Both Models
 - **Standardizing Date and Time Format:** Ensured a consistent format for the date and time feature.
 - **Handling Missing Values:** Identified intervals with missing temperature values and imputed them with the mean value. (Other approaches were considered but showed no significant impact on model performance, thus the simplest method with minimal processing load was chosen.)
 - **Correcting Erroneous Values:** Detected instances where the temperature was incorrectly recorded as -9999. Applied the same imputation method used for missing values.
-
-### Prophet Model
-Feature Requirements:
-Only required the date and target variable (temperature). No additional features were created.
-### XGBoost Model
 - **Feature Engineering:** Created new features based on the date: hour, dayofweek, quarter, month, year, dayofyear, dayofmonth, weekofyear, and season.
 - **Data Analysis:** Conducted various analyses to better understand the data and identify key points for model development:
 - **Temperature Distribution:** The air temperature distribution approximates a normal distribution (see image below).
+- 
   ![img1](https://github.com/GabrielAlvesDS/TempTrack/blob/main/img/Distribution%20of%20Air%20Temperature.png)
-
+  
 <br>
-
 - **Temperature Range:** 50% of recorded temperatures fall within a 5°C range, from 21°C to 26°C. Note that this analysis was impacted by the imputed mean values (see image below).
+
  ![img2](https://github.com/GabrielAlvesDS/TempTrack/blob/main/img/Boxplot%20of%20Air%20Temperature.png)
-
+ 
 <br>
-
 - **Missing Data Impact:** Visualized the distribution by year to identify four significant gaps in 2002, 2004, 2010, and 2019 (see image below).
+
  ![img3](https://github.com/GabrielAlvesDS/TempTrack/blob/main/img/Missing%20values.png)
-
+ 
 <br>
-
 - **Seasonal Influence:** Identified the impact of seasons on temperature variation. The highest median temperature was in autumn and the lowest in spring, while the highest and lowest recorded temperatures were in summer and winter, respectively (see image below).
- ![img4](https://github.com/GabrielAlvesDS/TempTrack/blob/main/img/Season.png)
 
+ ![img4](https://github.com/GabrielAlvesDS/TempTrack/blob/main/img/Season.png)
+ 
 <br>
 
 - **Daily Temperature Variation:** Analyzed temperature variation throughout the day (see image below).
+
+- 
  ![img5](https://github.com/GabrielAlvesDS/TempTrack/blob/main/img/Hour.png)
 
 <br>
 
-- **Data Preparation:** Applied MinMaxScaler to all features, and a logarithmic transformation to the target variable to stabilize variance and normalize distribution.
+- **Data Preparation:** Applied MinMaxScaler to the target variable.
 
+- **Feature Selection:** To prepare the data for the LSTM model, we created input sequences and labels. The function create_sequences is responsible for generating these sequences, where each sequence consists of the temperatures from the last 24 hours (n_input = 24) and the label is the temperature of the next hour.
+
+  
 ## Model training
-The data was divided into training and testing sets, with the training set containing data from 2002 to 2022 and the testing set including only the last year, 2023.
+The data was divided into training and testing sets, with the training set containing data from 2002 to 2018 and the testing set including 2019 to 2023.
+The LSTM model was trained with the following steps:
+- **Model Architecture:**
+    - An LSTM layer with 50 units and ReLU activation was added.
+    - A Dropout layer with a rate of 0.2 was included to prevent overfitting.
+    - A Dense layer with a single unit was added to produce the final output.
 
-### Prophet Model
+<br>
+- **Model Compilation:**
+    - The model was compiled using the Adam optimizer and Mean Squared Error (MSE) loss function.
 
+<br>
+- **Early Stopping:**
+    - Early stopping was implemented to monitor the validation loss with a patience of 10 epochs. This helps in preventing overfitting by stopping the training once the validation loss stops improving.
 
-### XGBoost Model
-Initially, a basic model fit was performed to establish a baseline. Cross-validation was then applied to evaluate the model's performance using metrics such as MAE, MAPE, RMSE, and MSE.
+<br>
+- **Model Training:**
+    - The model was trained for up to 50 epochs with a batch size of 32.
+    - The training data was split into training and validation sets with a validation split of 20%.
+    - The early stopping callback was used to restore the best weights.
 
-To enhance the model, a hyperparameter tuning step was carried out using the Optuna library, which helps find the optimal values for parameters like learning rate, maximum tree depth, and the number of estimators.
-
-With the best hyperparameters identified, the final model was trained. After training, predictions were made on the test set, and error metrics were calculated to assess the model's performance, focusing on its accuracy in predicting hourly temperatures.
-
-This process allowed for fine-tuning the model, maximizing its accuracy and generalization ability to new data.
-
+ ![img6](https://github.com/GabrielAlvesDS/TempTrack/blob/main/img/LSTU-output.png)
 
 ## Model Evaluation
+The model evaluation involved several steps to assess its performance:
 
-### Prophet
-The performance of the Prophet model was assessed using the following metrics:
+- **Predictions and Rescaling:**
+We generated predictions using the test dataset.
+The predictions and actual values were rescaled back to their original scale using the MinMaxScaler.
 
-- Mean Squared Error (MSE): 10.58
-- Root Mean Squared Error (RMSE): 3.25
-- Mean Absolute Error (MAE): 2.47
-- Mean Absolute Percentage Error (MAPE): 9.96%
+- **Visualizations:**
+  - **Overall Performance:** A plot comparing the true vs. predicted temperatures was created to visualize the model’s performance over the entire test period.
 
-The Prophet model shows an RMSE of 3.25°C and an MAE of 2.47°C, indicating that the predictions deviate from actual temperatures by these amounts on average. Additionally, the MAPE of 9.96% suggests that the average prediction error is about 9.96% relative to the actual values. The Prophet model was notably easier to implement, as it required no additional feature creation and achieved these results without the need for hyperparameter tuning.
+ ![img6](https://github.com/GabrielAlvesDS/TempTrack/blob/main/img/LSTU-output.png)
 
-### XGBoost
-The performance of the final XGBoost model was assessed using the following metrics:
+  - **First Month of 2019:** A focused plot for the first month of 2019 was created to examine predictions in this specific period.
 
-- Mean Squared Error (MSE): 15.44
-- Root Mean Squared Error (RMSE): 3.93
-- Mean Absolute Error (MAE): 3.00
-- Mean Absolute Percentage Error (MAPE): 12.34%
+ ![img6](https://github.com/GabrielAlvesDS/TempTrack/blob/main/img/LSTU-output.png)
 
-The XGBoost model achieved an MSE of 15.44, RMSE of 3.93, MAE of 3.00, and MAPE of 12.34%. The performance metrics for XGBoost were approximately 17.65% to 34.16% worse compared to Prophet.
+  - **January 2020 and January 2023:** Scatter plots and line plots were used to compare predictions with true values for January 2020 and January 2023.
 
-### Performance Comparison:
+ ![img6](https://github.com/GabrielAlvesDS/TempTrack/blob/main/img/LSTU-output.png)
 
-- MSE: XGBoost's MSE is approximately 45.8% higher than Prophet's MSE.
-- RMSE: XGBoost's RMSE is about 20.9% higher than Prophet's RMSE.
-- MAE: XGBoost's MAE is roughly 21.5% higher than Prophet's MAE.
-- MAPE: XGBoost's MAPE is about 23.8% higher than Prophet's MAPE.
+  - **Performance Metrics:** Calculated the Mean Squared Error (MSE), Root Mean Squared Error (RMSE), Mean Absolute Error (MAE), and Mean Absolute Percentage Error (MAPE) to quantify the model’s accuracy.
 
-It is important to note that the XGBoost model required an extensive phase for hyperparameter tuning, which consumed significant time. In contrast, the Prophet model's simplicity and effectiveness in this case suggest that it might be a more suitable choice for temperature forecasting in similar scenarios.
+ ![img6](https://github.com/GabrielAlvesDS/TempTrack/blob/main/img/LSTU-output.png)
 
+- **Residual Analysis:**
+  - **Boxplot:** A boxplot of residuals was plotted to examine the spread and outliers.
+
+ ![img6](https://github.com/GabrielAlvesDS/TempTrack/blob/main/img/LSTU-output.png)
+
+  - **Histogram of Residuals:** Histograms of residuals showed their distribution, including a focused analysis on residuals below -3 and above +3.
+  - 
+ ![img6](https://github.com/GabrielAlvesDS/TempTrack/blob/main/img/LSTU-output.png)
 
 
