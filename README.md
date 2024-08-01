@@ -74,36 +74,23 @@ The LSTM model was trained with the following steps:
  ![img6](https://github.com/GabrielAlvesDS/TempTrack/blob/main/img/LSTU-output.png)
 
 ## Model Evaluation
-The model evaluation involved several steps to assess its performance:
 
-- **Predictions and Rescaling:**
-We generated predictions using the test dataset.
-The predictions and actual values were rescaled back to their original scale using the MinMaxScaler.
+- **Overall Performance:** A plot comparing the true vs. predicted temperatures was created to visualize the model’s performance over the entire test period.
 
-- **Visualizations:**
-  - **Overall Performance:** A plot comparing the true vs. predicted temperatures was created to visualize the model’s performance over the entire test period.
+ ![img6](https://github.com/GabrielAlvesDS/TempTrack/blob/main/img/TruevsPredictedComplete.png)
 
- ![img6](https://github.com/GabrielAlvesDS/TempTrack/blob/main/img/LSTU-output.png)
+- **First Month of 2019:** A focused plot for the first month of 2019 was created to examine predictions in this specific period.
 
-  - **First Month of 2019:** A focused plot for the first month of 2019 was created to examine predictions in this specific period.
+ ![img6](https://github.com/GabrielAlvesDS/TempTrack/blob/main/img/TruevsPredicted012019.png)
 
- ![img6](https://github.com/GabrielAlvesDS/TempTrack/blob/main/img/LSTU-output.png)
+- **January 2020 and January 2023:** Scatter plots and line plots were used to compare predictions with true values for January 2020 and January 2023.
 
-  - **January 2020 and January 2023:** Scatter plots and line plots were used to compare predictions with true values for January 2020 and January 2023.
+ ![img6](https://github.com/GabrielAlvesDS/TempTrack/blob/main/img/TruevsPredicted012023.png)
 
- ![img6](https://github.com/GabrielAlvesDS/TempTrack/blob/main/img/LSTU-output.png)
+ - **Performance Metrics:** Calculated the Mean Squared Error (MSE), Root Mean Squared Error (RMSE), Mean Absolute Error (MAE), and Mean Absolute Percentage Error (MAPE) to quantify the model’s accuracy.
 
-  - **Performance Metrics:** Calculated the Mean Squared Error (MSE), Root Mean Squared Error (RMSE), Mean Absolute Error (MAE), and Mean Absolute Percentage Error (MAPE) to quantify the model’s accuracy.
+ ![img6](https://github.com/GabrielAlvesDS/TempTrack/blob/main/img/FinalMetrics.png)
 
- ![img6](https://github.com/GabrielAlvesDS/TempTrack/blob/main/img/LSTU-output.png)
+- **Residual Analysis:** A boxplot of residuals was plotted to examine the spread and outliers.
 
-- **Residual Analysis:**
-  - **Boxplot:** A boxplot of residuals was plotted to examine the spread and outliers.
-
- ![img6](https://github.com/GabrielAlvesDS/TempTrack/blob/main/img/LSTU-output.png)
-
-  - **Histogram of Residuals:** Histograms of residuals showed their distribution, including a focused analysis on residuals below -3 and above +3.
-  - 
- ![img6](https://github.com/GabrielAlvesDS/TempTrack/blob/main/img/LSTU-output.png)
-
-
+ ![img6](https://github.com/GabrielAlvesDS/TempTrack/blob/main/img/BoxplotResidual.png)
