@@ -1,4 +1,4 @@
-# TempForest - Temperature Forecasting Long Short Term Model
+# LSTM_Forecast - Temperature Forecasting Long Short Term Model
 
 ![cover](https://github.com/GabrielAlvesDS/CarPrice_Pro/blob/main/images/carprice%20pro_cut.jpg)
 
