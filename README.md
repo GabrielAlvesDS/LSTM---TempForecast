@@ -113,15 +113,28 @@ The LSTM model was trained with the following steps:
 - **Training Process:**
   - **Epochs:** Up to 50
   - **Batch Size:** 32
+  - **Training and Validation Loss:**
+    BasicLSTM
+    
+     ![img6](https://github.com/GabrielAlvesDS/LSTM-TempForecast/blob/main/img/BasicLSTM - Output.png)
+ 
+<br>
 
- ![img6](https://github.com/GabrielAlvesDS/LSTM-TempForecast/blob/main/img/LSTU-output.png)
+    Day-Lagged LSTM
+    
+     ![img6](https://github.com/GabrielAlvesDS/LSTM-TempForecast/blob/main/img/Day-Lagged LSTM - Output.png)    
+ 
+<br>
 
+    Enhanced Feature LSTM
+    
+     ![img6](https://github.com/GabrielAlvesDS/LSTM-TempForecast/blob/main/img/Enhanced Feature LSTM - Output.png)
 
 <br>
 
 ## Comparative Analysis
 ### Performance Metrics Comparison
- ![img6](https://github.com/GabrielAlvesDS/LSTM-TempForecast/blob/main/img/.png)
+ ![img6](https://github.com/GabrielAlvesDS/LSTM-TempForecast/blob/main/img/FinalMetrics.png)
 
 ### Insights
   - **Basic LSTM:** Teve a melhor performance
@@ -132,40 +145,40 @@ The LSTM model was trained with the following steps:
 
 **OVERALL PERFORMANCE:** A plot comparing the true vs. predicted temperatures was created to visualize the model’s performance over the entire test period.
   - **Basic LSTM**
-  ![img6](https://github.com/GabrielAlvesDS/LSTM-TempForecast/blob/main/img/TruevsPredictedComplete.png)
+  ![img6](https://github.com/GabrielAlvesDS/LSTM-TempForecast/blob/main/img/TruevsPredictedComplete_BasicLSTM.png)
   As evident in the graph, the model successfully tracked temperature variations even when they deviated significantly from the averages.
   - **Day-Lagged LSTM**
-  ![img6](https://github.com/GabrielAlvesDS/LSTM-TempForecast/blob/main/img/.png)
+  ![img6](https://github.com/GabrielAlvesDS/LSTM-TempForecast/blob/main/img/TruevsPredictedComplete_Day-Lagged LSTM.png)
   - **Enhanced Feature LSTM**
-  ![img6](https://github.com/GabrielAlvesDS/LSTM-TempForecast/blob/main/img/.png)
+  ![img6](https://github.com/GabrielAlvesDS/LSTM-TempForecast/blob/main/img/TruevsPredictedComplete_Enhanced Feature LSTM.png)
 
 <br>
 
 **MONTHLY PERFORMANCE:** Focused plots for January 2019, January 2020, and January 2023.
   - **Basic LSTM**
     - **First Month of 2019:** A focused plot for the first month of 2019 was created to examine predictions in this specific period.
-    ![img6](https://github.com/GabrielAlvesDS/LSTM-TempForecast/blob/main/img/TruevsPredicted012019.png)
+    ![img6](https://github.com/GabrielAlvesDS/LSTM-TempForecast/blob/main/img/TruevsPredicted012019_BasicLSTM.png)
     - **January 2020 and January 2023:** Scatter plots and line plots were used to compare predictions with true values for January 2020 and January 2023.
-    ![img6](https://github.com/GabrielAlvesDS/LSTM-TempForecast/blob/main/img/TruevsPredicted012023.png)
+    ![img6](https://github.com/GabrielAlvesDS/LSTM-TempForecast/blob/main/img/TruevsPredicted012023_BasicLSTM.png)
     In both months, the model demonstrated efficiency in predicting the next hour's air temperature. This also indicates that predicting just the next hour is not as complex as expected.
   - **Day-Lagged LSTM**
-  ![img6](https://github.com/GabrielAlvesDS/LSTM-TempForecast/blob/main/img/.png)
+  ![img6](https://github.com/GabrielAlvesDS/LSTM-TempForecast/blob/main/img/TruevsPredicted012023_Day-Lagged LSTM.png)
 
   - **Enhanced Feature LSTM**
-  ![img6](https://github.com/GabrielAlvesDS/LSTM-TempForecast/blob/main/img/.png)
+  ![img6](https://github.com/GabrielAlvesDS/LSTM-TempForecast/blob/main/img/TruevsPredicted012023_Enhanced Feature LSTM.png)
 
 <br>
 
 **RESIDUAL ANALYSIS:** A boxplot of residuals was plotted to examine the spread and outliers, for each model.
   - **Basic LSTM**
-  ![img6](https://github.com/GabrielAlvesDS/LSTM-TempForecast/blob/main/img/BoxplotResidual.png)
+  ![img6](https://github.com/GabrielAlvesDS/LSTM-TempForecast/blob/main/img/BoxplotResidual_BasicLSTM.png)
   The above graph shows that very few predictions had an error greater than 5 degrees, either higher or lower.
 
   - **Day-Lagged LSTM**
-  ![img6](https://github.com/GabrielAlvesDS/LSTM-TempForecast/blob/main/img/.png)
+  ![img6](https://github.com/GabrielAlvesDS/LSTM-TempForecast/blob/main/img/BoxplotResidual_Day-Lagged LSTM.png)
 
   - **Enhanced Feature LSTM**
-  ![img6](https://github.com/GabrielAlvesDS/LSTM-TempForecast/blob/main/img/.png)
+  ![img6](https://github.com/GabrielAlvesDS/LSTM-TempForecast/blob/main/img/BoxplotResidual_Enhanced Feature LSTM.png)
   
 ## Conclusion
 Os resultados indicam que o modelo **"Basic LSTM"** teve o melhor desempenho, com apenas 0.80 de RMSE, o que está diretamente ralacionado ao objetivo do modelo o qual utiliza as últimos 24 horas anteriores para prever a próxima hora, uma tarefa muito mais simples do que a dos demais modelos que utiliza as informações das temperaturas com um atraso de 1 dia. Também identificamos que comparando os modelos **"Day-Lagged LSTM	"** e **"Enhanced Feature LSTM"** houve uma melhora na performance ao acrescentar novas features, reduzindo o RMSE em x%.
